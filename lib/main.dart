@@ -23,10 +23,13 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
+
   final String title;
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
+
+final _textController = TextEditingController();
 
 class _MyHomePageState extends State<MyHomePage> {
   String getToday() {
@@ -53,10 +56,21 @@ class _MyHomePageState extends State<MyHomePage> {
               flex: 1,
               child: Text(getToday()),
             ),
-            Flexible(
-              flex: 1,
-              child: Container(
-                color: Colors.blue,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: TextField(
+                      controller: _textController,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: const Text("add"),
+                  ),
+                ],
               ),
             ),
             Flexible(
