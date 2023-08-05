@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,39 +29,45 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String getToday() {
+    DateTime now = DateTime.now();
+    String strToday;
+    DateFormat formatter = DateFormat('yyyy-MM-dd');
+    strToday = formatter.format(now);
+    return strToday;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(
-            widget.title,
-          )),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+      ),
       body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Flexible(
-            flex: 1,
-            child: Container(
-              color: Colors.red,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(
+              flex: 1,
+              child: Text(getToday()),
             ),
-          ),
-          Flexible(
-            flex: 1,
-            child: Container(
-              color: Colors.blue,
+            Flexible(
+              flex: 1,
+              child: Container(
+                color: Colors.blue,
+              ),
             ),
-          ),
-          Flexible(
-            flex: 6,
-            child: Container(
-              color: Colors.green,
+            Flexible(
+              flex: 6,
+              child: Container(
+                color: Colors.green,
+              ),
             ),
-          ),
-        ],
-      )),
+          ],
+        ),
+      ),
     );
   }
 }
