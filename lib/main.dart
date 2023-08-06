@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,13 +26,14 @@ class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
   final String title;
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-final _textController = TextEditingController();
-
 class _MyHomePageState extends State<MyHomePage> {
+  final _textController = TextEditingController();
+
   String getToday() {
     DateTime now = DateTime.now();
     String strToday;
@@ -69,14 +71,21 @@ class _MyHomePageState extends State<MyHomePage> {
                   ElevatedButton(
                     onPressed: () {},
                     child: const Text("add"),
-                  ),
+                  )
                 ],
               ),
             ),
-            Flexible(
-              flex: 6,
-              child: Container(
-                color: Colors.green,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  LinearPercentIndicator(
+                    width: MediaQuery.of(context).size.width - 50,
+                    lineHeight: 14.0,
+                    percent: 0.3,
+                  ),
+                ],
               ),
             ),
           ],
