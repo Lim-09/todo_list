@@ -15,10 +15,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+          useMaterial3: true,
+          textTheme: const TextTheme(
+              bodyMedium: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
+              labelMedium:
+                  TextStyle(fontSize: 16, fontWeight: FontWeight.w300))),
+      home: const MyHomePage(title: '할 일 목록'),
     );
   }
 }
@@ -70,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -151,7 +154,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ? const Icon(Icons.check_box_rounded)
                                 : const Icon(
                                     Icons.check_box_outline_blank_rounded),
-                            Text(tasks[i].work),
+                            Text(tasks[i].work,
+                                style: Theme.of(context).textTheme.labelMedium),
                           ],
                         ),
                       ),
