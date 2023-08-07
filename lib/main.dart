@@ -38,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool isModifying = false;
   int modifyingindex = 0;
+  double percent = 0.0;
 
   String getToday() {
     DateTime now = DateTime.now();
@@ -45,6 +46,20 @@ class _MyHomePageState extends State<MyHomePage> {
     DateFormat formatter = DateFormat('yyyy년-MM월-dd일');
     strToday = formatter.format(now);
     return strToday;
+  }
+
+  void updatePercent() {
+    if (tasks.isEmpty) {
+      percent = 0.0;
+    } else {
+      var completeTaskCnt = 0;
+      for (var i = 0; i < tasks.length; i++) {
+        if (tasks[i].isComplete) {
+          completeTaskCnt += 1;
+        }
+      }
+      percent = completeTaskCnt / tasks.length;
+    }
   }
 
   @override
@@ -84,11 +99,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                 modifyingindex = 0;
                                 isModifying = false;
                               })
-                            : setState(() {
-                                var task = Task(_textController.text);
-                                tasks.add(task);
-                                _textController.clear();
-                              });
+                            : setState(
+                                () {
+                                  var task = Task(_textController.text);
+                                  tasks.add(task);
+                                  _textController.clear();
+                                },
+                              );
+                        updatePercent();
                       }
                     },
                     child: isModifying ? const Text("수정") : const Text("추가"),
@@ -104,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   LinearPercentIndicator(
                     width: MediaQuery.of(context).size.width - 50,
                     lineHeight: 14.0,
-                    percent: 0.5,
+                    percent: percent,
                   )
                 ],
               ),
@@ -122,6 +140,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onPressed: () {
                         setState(() {
                           tasks[i].isComplete = !tasks[i].isComplete;
+                          updatePercent();
                         });
                       },
                       child: Padding(
@@ -154,6 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       setState(() {
                         tasks.remove(tasks[i]);
+                        updatePercent();
                       });
                     },
                     child: const Text("삭제"),
