@@ -37,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String getToday() {
     DateTime now = DateTime.now();
     String strToday;
-    DateFormat formatter = DateFormat('yyyy-MM-dd');
+    DateFormat formatter = DateFormat('yyyy년-MM월-dd일');
     strToday = formatter.format(now);
     return strToday;
   }
@@ -52,12 +52,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Flexible(
-              flex: 1,
-              child: Text(getToday()),
-            ),
+            Text(getToday()),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -70,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   ElevatedButton(
                     onPressed: () {},
-                    child: const Text("add"),
+                    child: const Text("추가"),
                   )
                 ],
               ),
@@ -83,11 +80,37 @@ class _MyHomePageState extends State<MyHomePage> {
                   LinearPercentIndicator(
                     width: MediaQuery.of(context).size.width - 50,
                     lineHeight: 14.0,
-                    percent: 0.3,
-                  ),
+                    percent: 0.5,
+                  )
                 ],
               ),
             ),
+            Row(
+              children: [
+                Flexible(
+                  child: TextButton(
+                    onPressed: () {},
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Icon(Icons.check_box_outline_blank_rounded),
+                          Text("할 일1")
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text("수정"),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text("삭제"),
+                ),
+              ],
+            )
           ],
         ),
       ),
