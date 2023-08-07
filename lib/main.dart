@@ -36,6 +36,9 @@ class _MyHomePageState extends State<MyHomePage> {
   final _textController = TextEditingController();
   List<Task> tasks = [];
 
+  bool isModifying = false;
+  int modifyingindex = 0;
+
   String getToday() {
     DateTime now = DateTime.now();
     String strToday;
@@ -72,14 +75,23 @@ class _MyHomePageState extends State<MyHomePage> {
                       if (_textController.text == '') {
                         return;
                       } else {
-                        setState(() {
-                          var task = Task(_textController.text);
-                          tasks.add(task);
-                          _textController.clear();
-                        });
+                        isModifying
+                            ? setState(() {
+                                tasks[modifyingindex].work =
+                                    _textController.text;
+                                tasks[modifyingindex].isComplete = false;
+                                _textController.clear();
+                                modifyingindex = 0;
+                                isModifying = false;
+                              })
+                            : setState(() {
+                                var task = Task(_textController.text);
+                                tasks.add(task);
+                                _textController.clear();
+                              });
                       }
                     },
-                    child: const Text("추가"),
+                    child: isModifying ? const Text("수정") : const Text("추가"),
                   ),
                 ],
               ),
@@ -107,20 +119,35 @@ class _MyHomePageState extends State<MyHomePage> {
                           borderRadius: BorderRadius.all(Radius.zero),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          tasks[i].isComplete = !tasks[i].isComplete;
+                        });
+                      },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
                           children: [
-                            const Icon(Icons.check_box_outline_blank_rounded),
-                            Text(tasks[i].work)
+                            tasks[i].isComplete
+                                ? const Icon(Icons.check_box_rounded)
+                                : const Icon(
+                                    Icons.check_box_outline_blank_rounded),
+                            Text(tasks[i].work),
                           ],
                         ),
                       ),
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: isModifying
+                        ? null
+                        : () {
+                            setState(() {
+                              isModifying = true;
+                              _textController.text = tasks[i].work;
+                              modifyingindex = i;
+                            });
+                          },
                     child: const Text("수정"),
                   ),
                   TextButton(
