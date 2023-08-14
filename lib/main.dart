@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'task.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(const MyApp());
@@ -42,6 +44,14 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isModifying = false;
   int modifyingindex = 0;
   double percent = 0.0;
+
+  addTaskToServer(Task task) async {
+    final response = await http.post(
+        Uri.http('10.0.2.2:8000', "/posting/addTask"),
+        headers: {'Content-type': 'application/json'},
+        body: jsonEncode(task));
+    print("response is = ${response.body}");
+  }
 
   String getToday() {
     DateTime now = DateTime.now();
@@ -104,8 +114,11 @@ class _MyHomePageState extends State<MyHomePage> {
                               })
                             : setState(
                                 () {
-                                  var task = Task(_textController.text);
-                                  tasks.add(task);
+                                  var task = Task(
+                                      id: 0,
+                                      work: _textController.text,
+                                      isComplete: false);
+                                  addTaskToServer(task);
                                   _textController.clear();
                                 },
                               );
