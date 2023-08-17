@@ -51,6 +51,20 @@ class _MyHomePageState extends State<MyHomePage> {
         headers: {'Content-type': 'application/json'},
         body: jsonEncode(task));
     print("response is = ${response.body}");
+    getTaskToServer();
+  }
+
+  getTaskToServer() async {
+    final response = await http.get(Uri.http('10.0.2.2:8000', '/posting'));
+    String responseBody = utf8.decode(response.bodyBytes);
+    List<Task> list = json
+        .decode(responseBody)
+        .map<Task>((json) => Task.fromJson(json))
+        .toList();
+    print(list.length);
+    setState(() {
+      tasks = list;
+    });
   }
 
   String getToday() {
@@ -73,6 +87,13 @@ class _MyHomePageState extends State<MyHomePage> {
       }
       percent = completeTaskCnt / tasks.length;
     }
+  }
+
+  @override
+  void initState() {
+    // TODO:
+    super.initState();
+    getTaskToServer();
   }
 
   @override
