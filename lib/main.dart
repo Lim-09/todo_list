@@ -67,6 +67,18 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  updateTaskToServer(int id, String work) async {
+    final response = await http
+        .get(Uri.http('10.0.2.2:8000', '/posting/updateTask/$id/$work'));
+    getTaskToServer();
+  }
+
+  deleteTaskToServer(int id) async {
+    final response =
+        await http.get(Uri.http('10.0.2.2:8000', '/posting/deleteTask/$id'));
+    getTaskToServer();
+  }
+
   String getToday() {
     DateTime now = DateTime.now();
     String strToday;
@@ -126,9 +138,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       } else {
                         isModifying
                             ? setState(() {
-                                tasks[modifyingindex].work =
-                                    _textController.text;
-                                tasks[modifyingindex].isComplete = false;
+                                updateTaskToServer(tasks[modifyingindex].id,
+                                    _textController.text);
                                 _textController.clear();
                                 modifyingindex = 0;
                                 isModifying = false;
@@ -210,7 +221,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   TextButton(
                     onPressed: () {
                       setState(() {
-                        tasks.remove(tasks[i]);
+                        deleteTaskToServer(tasks[i].id);
                         updatePercent();
                       });
                     },
