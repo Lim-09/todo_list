@@ -1,6 +1,6 @@
 # todo_list
 
-A new Flutter project.
+안드로이드용 할 일 목록 앱 제작
 
 ## Getting Started
 
